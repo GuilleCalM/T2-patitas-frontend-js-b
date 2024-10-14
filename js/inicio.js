@@ -5,6 +5,13 @@
  * -> <script type="module" src="js/inicio.js" defer></script>
  */
 window.addEventListener('load', function(){
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const mensajeCierre = urlParams.get('mensajeCierre');
+
+    if (mensajeCierre) {
+        mostrarCierreExitoso(mensajeCierre);
+    }
     
     // referenciar controles del formulario
     const tipoDocumento = this.document.getElementById('tipoDocumento');
@@ -33,6 +40,11 @@ window.addEventListener('load', function(){
 function mostrarAlerta(mensaje) {
     msgError.innerHTML = mensaje;
     msgError.style.display = 'block';
+}
+
+function mostrarCierreExitoso(mensaje) {
+    msgSuccess.innerHTML = mensaje;
+    msgSuccess.style.display = 'block';
 }
 
 function ocultarAlerta() {
@@ -70,6 +82,8 @@ async function autenticar() {
 
         if(result.codigo === '00') {
             localStorage.setItem('result', JSON.stringify(result));
+            localStorage.setItem('tipoDocumento', tipoDocumento.value);
+            localStorage.setItem('numeroDocumento', numeroDocumento.value);
             window.location.replace('principal.html');
         } else {
             mostrarAlerta(result.mensaje);
